@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+     <html>
+     <head>
+         <title>Grammar & Chat Converter</title>
+     </head>
+     <body>
+         <h1>Enter Your Text</h1>
+         <form method="POST">
+             <textarea name="text" rows="5" cols="40"></textarea><br>
+             <button type="submit">Submit</button>
+         </form>
+         {% if grammar_result %}
+             <h2>Grammar Errors:</h2>
+             <pre>{{ grammar_result }}</pre>
+         {% endif %}
+         {% if human_friendly_text %}
+             <h2>Human-Friendly Text:</h2>
+             <p>{{ human_friendly_text }}</p>
+         {% endif %}
+     </body>
+     </html>
