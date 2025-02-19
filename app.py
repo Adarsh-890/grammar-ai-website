@@ -40,11 +40,12 @@ def make_chat_human_friendly(text):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    user_input = ""  # 🔥 Default value de di, taaki error na aaye
     corrected_text = ""
     human_friendly_text = ""
 
     if request.method == "POST":
-        user_input = request.form["text"]
+        user_input = request.form.get("text", "")
         corrected_text = correct_grammar(user_input)
         human_friendly_text = make_chat_human_friendly(corrected_text)
 
