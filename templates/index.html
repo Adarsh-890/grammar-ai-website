@@ -9,20 +9,31 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            background: white; /* Pure white background */
+            background: white;
             position: relative;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* Light gradient effect at the bottom */
+        /* Smooth animated gradient at the bottom */
         body::after {
             content: "";
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 150px;
-            background: linear-gradient(to top, rgba(255, 165, 0, 0.2), rgba(255, 255, 255, 0));
+            height: 200px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            border-top-left-radius: 50% 20px;
+            border-top-right-radius: 50% 20px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .header-box {
