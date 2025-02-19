@@ -1,60 +1,33 @@
-from flask import Flask, render_template, request
-import requests
+
+from flask import Flask, request, jsonify
+import openai
 
 app = Flask(__name__)
 
-LANGUAGE_TOOL_API = "https://api.languagetool.org/v2/check"
+# Yahan apna OpenAI API key daalo
+OPENAI_API_KEY = "tumhara-openai-api-key"
 
 def correct_grammar(text):
-    payload = {"text": text, "language": "en-US"}
-    
     try:
-        response = requests.post(LANGUAGE_TOOL_API, data=payload, timeout=10)
-    except requests.exceptions.RequestException:
-        return text  # Network error par original text return kare
-    
-    if response.status_code == 200:
-        result = response.json()
-        
-        if not result.get("matches"):
-            return text
-        
-        corrected_text = list(text)
-        cumulative_delta = 0
-        
-        # Process matches from earliest to latest after sorting
-        for match in sorted(result["matches"], key=lambda x: x["offset"]):
-            if not match.get("replacements"):
-                continue
-            
-            start = match["offset"]
-            length = match["length"]
-            replacement = match["replacements"][0]["value"]
-            
-            adjusted_start = start + cumulative_delta
-            adjusted_end = adjusted_start + length
-            
-            if adjusted_start > len(corrected_text):
-                continue
-            if adjusted_end > len(corrected_text):
-                adjusted_end = len(corrected_text)
-            
-            corrected_text[adjusted_start:adjusted_end] = list(replacement)
-            cumulative_delta += len(replacement) - length
-            
-        return "".join(corrected_text)
-    
-    return text  # Fallback for non-200 status codes
+        response = openai.ChatCompletion.create(
+            model="gpt-4-turbo",  # ya "gpt-3.5-turbo"
+            messages=[{"role": "user", "content": f"Correct this sentence: {text}"}],
+            api_key=OPENAI_API_KEY
+        )
+        return response["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"Error: {str(e)}"
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    corrected_text = ""
-    
-    if request.method == "POST":
-        user_input = request.form["text"]
-        corrected_text = correct_grammar(user_input)
-    
-    return render_template("index.html", corrected_text=corrected_text)
+@app.route("/correct", methods=["POST"])
+def correct():
+    data = request.get_json()
+    text = data.get("text", "")
 
-if __name__ == '__main__':
+    if not text:
+        return jsonify({"error": "No text provided!"}), 400
+
+    corrected_text = correct_grammar(text)
+    return jsonify({"corrected_text": corrected_text})
+
+if __name__ == "__main__":
     app.run(debug=True)
