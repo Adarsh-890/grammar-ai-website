@@ -9,15 +9,20 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
-            background-size: 400% 400%;
-            animation: gradientAnimation 8s ease infinite;
+            background: white; /* Pure white background */
+            position: relative;
+            min-height: 100vh;
         }
 
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Light gradient effect at the bottom */
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to top, rgba(255, 165, 0, 0.2), rgba(255, 255, 255, 0));
         }
 
         .header-box {
@@ -44,6 +49,7 @@
             display: block;
             margin: auto;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -53,14 +59,17 @@
             border: none;
             border-radius: 5px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .output-box {
             margin-top: 20px;
             width: 80%;
