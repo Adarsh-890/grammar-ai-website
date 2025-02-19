@@ -5,98 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grammar AI</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
-            height: 100vh;
+            margin: 20px;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-box {
+            background-color: black;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: linear-gradient(180deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c, #a18cd1, #fbc2eb);
-            background-size: 200% 200%;
-            animation: smoothBackground 12s ease-in-out infinite;
-            filter: brightness(1.1);
-        }
-
-        @keyframes smoothBackground {
-            0% { background-position: 50% 0%; }
-            50% { background-position: 50% 100%; }
-            100% { background-position: 50% 0%; }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
             text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.4);
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-        }
-
-        h1, h3 {
-            color: #fff;
-            font-size: 2em;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
         }
 
         textarea {
-            width: 100%;
+            width: 80%;
+            max-width: 600px;
             height: 100px;
-            margin-bottom: 15px;
-            padding: 12px;
+            margin-bottom: 10px;
+            padding: 10px;
             resize: vertical;
-            border-radius: 5px;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 16px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: auto;
         }
-
         button {
-            padding: 12px 25px;
+            padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
-            transition: all 0.3s ease;
         }
-
         button:hover {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: #0056b3;
         }
-
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .output-box {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Grammar AI Website</h1>
-        
-        <form method="post">
+    <div class="header-box">
+        Grammar AI Website
+    </div>
+
+    <form method="post">
+        <div class="container">
             <h3>Enter Text:</h3>
             <textarea name="text" placeholder="Type your sentence here...">{% if input_text %}{{ input_text }}{% endif %}</textarea>
             <br>
             <button type="submit">Correct Grammar</button>
-        </form>
+        </div>
+    </form>
 
-        {% if corrected_text %}
+    {% if corrected_text %}
+        <div class="container">
             <h3>Grammar Corrected:</h3>
-            <textarea readonly>{{ corrected_text }}</textarea>
-        {% endif %}
-    </div>
+            <textarea class="output-box" readonly>{{ corrected_text }}</textarea>
+        </div>
+    {% endif %}
 
 </body>
 </html>
