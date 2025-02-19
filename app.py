@@ -1,15 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import requests
 
 app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
-    
-import requests
 
 LANGUAGE_TOOL_API = "https://api.languagetool.org/v2/check"
 
@@ -17,10 +9,9 @@ def correct_grammar(text):
     payload = {"text": text, "language": "en-US"}
     
     try:
-        # Adding timeout to prevent hanging requests
         response = requests.post(LANGUAGE_TOOL_API, data=payload, timeout=10)
     except requests.exceptions.RequestException:
-        return text  # Return original text on network errors
+        return text  # Network error par original text return kare
     
     if response.status_code == 200:
         result = response.json()
@@ -40,22 +31,30 @@ def correct_grammar(text):
             length = match["length"]
             replacement = match["replacements"][0]["value"]
             
-            # Adjust positions based on previous changes
             adjusted_start = start + cumulative_delta
             adjusted_end = adjusted_start + length
             
-            # Check if adjusted positions are within bounds
             if adjusted_start > len(corrected_text):
                 continue
             if adjusted_end > len(corrected_text):
                 adjusted_end = len(corrected_text)
             
-            # Apply replacement
             corrected_text[adjusted_start:adjusted_end] = list(replacement)
-            
-            # Update cumulative delta for length changes
             cumulative_delta += len(replacement) - length
             
         return "".join(corrected_text)
     
     return text  # Fallback for non-200 status codes
+
+@app.route("/", methods=["GET", "POST"])
+def home():
+    corrected_text = ""
+    
+    if request.method == "POST":
+        user_input = request.form["text"]
+        corrected_text = correct_grammar(user_input)
+    
+    return render_template("index.html", corrected_text=corrected_text)
+
+if __name__ == '__main__':
+    app.run(debug=True)
