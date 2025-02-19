@@ -108,6 +108,7 @@
             border: none;
             border-radius: 5px;
             margin-top: 10px;
+            transition: 0.3s;
         }
 
         button:hover {
@@ -185,14 +186,12 @@
 
     <!-- Grammar AI Section -->
     <div id="grammar" class="tab-content">
-        <form method="post">
-            <div class="container">
-                <h3>Enter Text:</h3>
-                <textarea id="inputText" placeholder="Type your sentence here..."></textarea>
-                <br>
-                <button type="button" onclick="correctGrammar()">Correct Grammar</button>
-            </div>
-        </form>
+        <div class="container">
+            <h3>Enter Text:</h3>
+            <textarea id="inputText" placeholder="Type your sentence here..."></textarea>
+            <br>
+            <button type="button" onclick="correctGrammar()">Correct Grammar</button>
+        </div>
 
         <div class="container">
             <h3>Grammar Corrected:</h3>
@@ -207,21 +206,27 @@
             document.getElementById(tabId).style.display = 'block';
         }
 
-        function correctGrammar() {
+        async function correctGrammar() {
             let inputText = document.getElementById('inputText').value;
             let outputText = document.getElementById('outputText');
-            
+
             if (inputText.trim() === "") {
                 outputText.value = "Please enter text for correction.";
                 return;
             }
 
-            // Fake AI-powered grammar correction (replace this with actual AI processing)
-            outputText.value = inputText.replace(/i /g, "I ")
-                                        .replace(/dont/g, "don't")
-                                        .replace(/wanna/g, "want to")
-                                        .replace(/gonna/g, "going to")
-                                        .replace(/aint/g, "isn't");
+            try {
+                let response = await fetch('http://127.0.0.1:5000/correct', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: inputText })
+                });
+
+                let data = await response.json();
+                outputText.value = data.corrected_text || "Error correcting text!";
+            } catch (error) {
+                outputText.value = "API Error!";
+            }
         }
     </script>
 
