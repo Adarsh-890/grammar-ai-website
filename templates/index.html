@@ -5,19 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grammar AI</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Gradient Animation */
         body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 20px;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
         }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         textarea {
             width: 80%;
-            max-width: 600px; /* Maximum width to keep layout clean */
+            max-width: 600px;
             height: 100px;
             margin-bottom: 10px;
             padding: 10px;
             resize: vertical;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -26,12 +54,15 @@
             color: white;
             border: none;
             border-radius: 5px;
+            transition: background 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         h1, h3 {
-            color: #333;
+            color: white;
         }
     </style>
 </head>
