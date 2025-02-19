@@ -1,22 +1,28 @@
+import requests
+
+LANGUAGE_TOOL_API = "https://api.languagetool.org/v2/check"
+
 def correct_grammar(text):
     payload = {"text": text, "language": "en-US"}
     response = requests.post(LANGUAGE_TOOL_API, data=payload)
-    
+
     if response.status_code == 200:
         result = response.json()
         
-        # Agar koi error nahi mila toh original text return karein
+        # Agar koi grammar mistake nahi hai toh original text return karein
         if not result.get("matches"):
             return text
-        
-        corrected_text = text
+
+        corrected_text = list(text)  # Text ko list banayein taaki indexing se replace kar sakein
         for match in result["matches"]:
             if "replacements" in match and match["replacements"]:
-                # Replace incorrect word with the first suggested correction
-                incorrect_word = match["context"]["text"]
+                start = match["offset"]
+                end = start + match["length"]
                 replacement = match["replacements"][0]["value"]
-                corrected_text = corrected_text.replace(incorrect_word, replacement, 1)
-        
-        return corrected_text
 
-    return text  # API fail ho jaye toh original text return kare
+                # Replace incorrect word
+                corrected_text[start:end] = replacement
+
+        return "".join(corrected_text)  # List ko wapas string me convert karein
+
+    return text  # Agar API fail ho jaye toh original text return karein
