@@ -3,71 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar AI</title>
+    <title>Grammar AI - Advanced UI</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding-top: 60px;
+            background: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: black;
+        /* Navbar */
+        .navbar {
+            background: black;
             color: white;
-            padding: 15px 0;
-            font-size: 24px;
-            font-weight: bold;
+            padding: 15px 20px;
             text-align: center;
-        }
-
-        .container {
-            margin-top: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+            position: fixed;
             width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 70px;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+
+        .tab:hover {
+            background: #0056b3;
+        }
+
+        .tab-content {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Active Tab */
+        .active {
+            display: block;
+        }
+
+        /* About Section */
+        .about {
+            padding: 50px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* Form & Output */
+        .container {
+            text-align: center;
+            margin-top: 30px;
         }
 
         textarea {
-            width: 100%;
-            height: 150px;
-            margin-bottom: 10px;
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
             padding: 10px;
-            font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            display: block;
+            margin: auto;
             resize: vertical;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 16px;
             cursor: pointer;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
-            margin-bottom: 15px;
+            margin-top: 10px;
         }
 
         button:hover {
@@ -75,57 +108,87 @@
         }
 
         .output-box {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* Smooth Animated Gradient */
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
             width: 100%;
-            height: 150px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: white;
-            text-align: left;
+            height: 250px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            border-top-left-radius: 50% 30px;
+            border-top-right-radius: 50% 30px;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">Grammar AI Website</div>
+    <!-- Navbar -->
+    <div class="navbar">
+        Grammar AI - Advanced
+    </div>
 
-    <div class="container">
-        <h3>Enter Text:</h3>
-        <textarea id="inputText" placeholder="Type your sentence here..."></textarea>
-        <button onclick="checkGrammar()">Correct Grammar</button>
-        
-        <h3>Grammar Corrected:</h3>
-        <div class="output-box" id="outputText"></div>
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab" onclick="showTab('home')">Home</div>
+        <div class="tab" onclick="showTab('about')">About</div>
+        <div class="tab" onclick="showTab('grammar')">Grammar AI</div>
+    </div>
+
+    <!-- Home Section -->
+    <div id="home" class="tab-content active">
+        <h2>Welcome to Grammar AI</h2>
+        <p>Improve your writing with AI-powered grammar correction.</p>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="tab-content">
+        <div class="about">
+            <h2>About Us</h2>
+            <p>Grammar AI is an advanced tool designed to enhance your writing skills. 
+               Our AI detects errors and suggests the best corrections to improve clarity, grammar, and fluency.</p>
+        </div>
+    </div>
+
+    <!-- Grammar AI Section -->
+    <div id="grammar" class="tab-content">
+        <form method="post">
+            <div class="container">
+                <h3>Enter Text:</h3>
+                <textarea name="text" placeholder="Type your sentence here...">{% if input_text %}{{ input_text }}{% endif %}</textarea>
+                <br>
+                <button type="submit">Correct Grammar</button>
+            </div>
+        </form>
+
+        {% if corrected_text %}
+            <div class="container">
+                <h3>Grammar Corrected:</h3>
+                <textarea class="output-box" readonly>{{ corrected_text }}</textarea>
+            </div>
+        {% endif %}
     </div>
 
     <script>
-        function checkGrammar() {
-            let inputText = document.getElementById("inputText").value;
-
-            if (inputText.trim() === "") {
-                alert("Please enter a sentence!");
-                return;
-            }
-
-            fetch("https://api.languagetool.org/v2/check", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({
-                    text: inputText,
-                    language: "en-US"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let correctedText = inputText;
-                data.matches.forEach(error => {
-                    correctedText = correctedText.replace(error.context.text, error.replacements[0].value);
-                });
-
-                document.getElementById("outputText").innerText = correctedText || "No errors found!";
-            })
-            .catch(error => console.error("Error:", error));
+        function showTab(tabId) {
+            let tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
         }
     </script>
 
