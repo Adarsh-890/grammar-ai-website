@@ -11,25 +11,22 @@
             box-sizing: border-box;
         }
 
-        /* Gradient Animation */
         body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 20px;
             color: white;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c);
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ff758c, #a18cd1, #fbc2eb);
             background-size: 400% 400%;
             animation: gradientAnimation 8s ease infinite;
         }
 
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
+            25% { background-position: 50% 100%; }
             50% { background-position: 100% 50%; }
+            75% { background-position: 50% 0%; }
             100% { background-position: 0% 50%; }
         }
 
@@ -40,10 +37,9 @@
             margin-bottom: 10px;
             padding: 10px;
             resize: vertical;
-            border: none;
             border-radius: 5px;
-            font-size: 16px;
-            color: #333;
+            border: none;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         button {
@@ -54,7 +50,7 @@
             color: white;
             border: none;
             border-radius: 5px;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease-in-out;
         }
 
         button:hover {
