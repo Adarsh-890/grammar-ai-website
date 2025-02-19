@@ -7,7 +7,7 @@ from flask import Flask, render_template, request
      LANGUAGE_TOOL_API = "https://api.languagetool.org/v2/check"
 
      # OpenAI GPT-3 API (Apna API Key Yahan Dalen)
-     OPENAI_API_KEY = "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"
+     OPENAI_API_KEY = "abcd"
      OPENAI_API_URL = "https://api.openai.com/v1/completions"
 
      def correct_grammar(text):
