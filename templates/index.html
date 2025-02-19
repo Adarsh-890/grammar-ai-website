@@ -12,10 +12,11 @@
         }
         textarea {
             width: 80%;
+            max-width: 600px; /* Maximum width to keep layout clean */
             height: 100px;
             margin-bottom: 10px;
             padding: 10px;
-            resize: vertical; /* Allows the user to resize the textarea vertically */
+            resize: vertical;
         }
         button {
             padding: 10px 20px;
@@ -40,7 +41,7 @@
     
     <form method="post">
         <h3>Enter Text:</h3>
-        <textarea name="text" placeholder="Type your sentence here...">{{ input_text }}</textarea>
+        <textarea name="text" placeholder="Type your sentence here...">{% if input_text %}{{ input_text }}{% endif %}</textarea>
         <br>
         <button type="submit">Correct Grammar</button>
     </form>
@@ -48,11 +49,6 @@
     {% if corrected_text %}
         <h3>Grammar Corrected:</h3>
         <textarea readonly>{{ corrected_text }}</textarea>
-    {% endif %}
-
-    {% if human_friendly_text %}
-        <h3>Human-Friendly Text:</h3>
-        <textarea readonly>{{ human_friendly_text }}</textarea>
     {% endif %}
 
 </body>
